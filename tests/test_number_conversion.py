@@ -1,5 +1,5 @@
 import unittest
-from ..core.number_conversion import (
+from core.number_conversion import (
     decimal_to_binary_float,
     binary_to_decimal_float,
     to_base32,
@@ -8,12 +8,12 @@ from ..core.number_conversion import (
     parse_number,
     perform_binary_arithmetic
 )
-from ..visualization.circuit_visualization import (
+from visualization.circuit_visualization import (
     show_half_adder,
     show_full_adder,
     show_ripple_carry_adder
 )
-from ..core.signed_representations import check_overflow
+from core.signed_representations import check_overflow
 
 class TestNumberConversion(unittest.TestCase):
     """Test suite for number conversion utility."""
