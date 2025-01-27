@@ -18,29 +18,10 @@ class Colors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
 
-def decimal_to_binary_float(decimal_value: float, int_bits: int = 64, frac_bits: int = 4) -> str:
-    """Convert decimal (including fractional) to binary string.
-    
-    Args:
-        decimal_value: The decimal number to convert
-        int_bits: Number of bits for integer part (default 64)
-        frac_bits: Number of bits for fractional part (default 4)
-        
-    Returns:
-        Binary string representation
-        
-    Raises:
-        ValueError: If the number is too large for the specified bit size
-    """
+def decimal_to_binary_float(decimal_value: float, int_bits: int = 32, frac_bits: int = 4) -> str:
+    """Convert decimal (including fractional) to binary string."""
     int_part = int(decimal_value)
     frac_part = abs(decimal_value - int_part)
-    
-    # Validate bit size
-    max_positive = (1 << (int_bits - 1)) - 1
-    min_negative = -(1 << (int_bits - 1))
-    
-    if int_part > max_positive or int_part < min_negative:
-        raise ValueError(f"Number too large for {int_bits}-bit representation. Range: [{min_negative}, {max_positive}]")
     
     # Convert integer part
     if int_part >= 0:
@@ -71,10 +52,21 @@ def binary_to_decimal(binary_str: str) -> int:
 
 def binary_to_decimal_float(binary_str: str) -> float:
     """Convert binary string to decimal, handling fractional parts."""
+    # Validate binary string
+    for c in binary_str.replace('.', ''):
+        if c not in '01':
+            raise ValueError("Invalid binary digit")
+            
     if '.' not in binary_str:
         return float(binary_to_decimal(binary_str))
         
-    int_part, frac_part = binary_str.split('.')
+    # Split into integer and fractional parts
+    parts = binary_str.split('.')
+    if len(parts) > 2:
+        raise ValueError("Invalid binary format: multiple decimal points")
+        
+    int_part = parts[0]
+    frac_part = parts[1] if len(parts) > 1 else ''
     
     # Convert integer part
     int_value = binary_to_decimal(int_part) if int_part else 0
@@ -144,10 +136,22 @@ def color_binary_groups(binary: str, group_size: int = 4) -> str:
     return ' '.join(f"{colors[i % len(colors)]}{binary[i:i+group_size]}{Colors.ENDC}" 
                    for i in range(0, len(binary), group_size)).strip()
 
-BASE32_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
-
 def to_base32(value: float) -> str:
-    """Convert a number to base32 representation."""
+    """Convert a number to base32 representation using standard alphabet (0-9, A-V).
+    
+    For values 0-9, uses decimal digits.
+    For values 10-31, uses letters A-V.
+    """
+    if value < 0:
+        raise ValueError("Negative numbers not supported in base32 conversion")
+    
+    def digit_to_base32(n: int) -> str:
+        if n < 0 or n >= 32:
+            raise ValueError(f"Invalid base32 digit: {n}")
+        if n < 10:
+            return str(n)
+        return chr(ord('A') + (n - 10))
+    
     int_part = int(value)
     frac_part = value - int_part
     
@@ -157,7 +161,7 @@ def to_base32(value: float) -> str:
     else:
         base32_int = ""
         while int_part > 0:
-            base32_int = BASE32_CHARS[int_part % 32] + base32_int
+            base32_int = digit_to_base32(int_part % 32) + base32_int
             int_part //= 32
     
     # Convert fractional part (up to 6 base32 digits)
@@ -168,7 +172,7 @@ def to_base32(value: float) -> str:
     for _ in range(6):
         frac_part *= 32
         digit = int(frac_part)
-        base32_frac += BASE32_CHARS[digit]
+        base32_frac += digit_to_base32(digit)
         frac_part -= digit
         if frac_part == 0:
             break

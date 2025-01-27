@@ -1,0 +1,26 @@
+// Two's complement is a crucial method for representing signed integers in binary within computers.
+// It allows for both positive and negative numbers to be represented using binary digits.
+// Positive numbers are represented in their standard binary form, just as you would expect.
+// Negative numbers, however, are encoded using the two's complement transformation.
+
+// To find the 2's complement of a positive binary number (and thus represent its negative counterpart), follow these steps:
+
+// Example: Let's find the 2's complement of 0110 (base 2), which represents positive 6 in 4-bit binary. This will give us the representation for negative 6.
+
+// 1. Start with the positive binary number: 0110 (base 2)
+// 2. Invert all the bits (flip 0s to 1s and 1s to 0s), also known as finding the 1's complement: 1001
+// 3. Add 1 to the result from step 2:
+//    1001
+//  +    1
+//  ------
+//   1010
+
+// Therefore, 1010 (base 2) is the 2's complement representation of negative 6.
+
+// Key Advantages of using 2's complement:
+// - Simplified Arithmetic:  Addition and subtraction of both positive and negative numbers can be performed using the same binary adder circuitry.
+// - Efficient Overflow Detection: Makes it easier to detect overflow conditions in arithmetic operations.
+// - Standard in Computing:  It is the dominant method for representing signed integers in modern computers due to its efficiency and simplicity in hardware implementation.
+
+Two's complement is a method for representing signed integers in binary form. It encodes positive numbers in standard binary and represents negative numbers by inverting all bits and adding 1. This ensures convenient arithmetic properties, such as only needing a single adder for both positive and negative values, and simplifying overflow detection. This method is the most common way that modern computers store and manipulate signed integers in binary.
+

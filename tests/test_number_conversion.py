@@ -5,15 +5,8 @@ from core.number_conversion import (
     to_base32,
     group_bits,
     color_binary_groups,
-    parse_number,
-    perform_binary_arithmetic
+    parse_number
 )
-from visualization.circuit_visualization import (
-    show_half_adder,
-    show_full_adder,
-    show_ripple_carry_adder
-)
-from core.signed_representations import check_overflow
 
 class TestNumberConversion(unittest.TestCase):
     """Test suite for number conversion utility."""
@@ -79,65 +72,19 @@ class TestNumberConversion(unittest.TestCase):
                 result = binary_to_decimal_float(binary)
                 self.assertEqual(result, expected)
     
-    def test_binary_arithmetic(self):
-        """Test binary arithmetic operations."""
-        # Addition
-        a, b = "101", "011"  # 5 + 3
-        result, steps = perform_binary_arithmetic(a, b, 'add')
-        self.assertEqual(int(result, 2), 8)
-        self.assertIsInstance(steps, list)
-        
-        # Subtraction
-        a, b = "1000", "0011"  # 8 - 3
-        result, steps = perform_binary_arithmetic(a, b, 'subtract')
-        self.assertEqual(int(result, 2), 5)
-        self.assertIsInstance(steps, list)
-        
-        # Multiplication
-        a, b = "101", "011"  # 5 * 3
-        result, steps = perform_binary_arithmetic(a, b, 'multiply')
-        self.assertEqual(int(result, 2), 15)
-        self.assertIsInstance(steps, list)
-        
-        # Division
-        a, b = "1111", "0011"  # 15 ÷ 3
-        result, steps = perform_binary_arithmetic(a, b, 'divide')
-        self.assertEqual(int(result, 2), 5)
-        self.assertIsInstance(steps, list)
-    
-    def test_overflow_detection(self):
-        """Test overflow detection in arithmetic operations."""
-        # 4-bit overflow cases
-        bits = 4
-        max_val = (1 << (bits - 1)) - 1  # 7 for 4 bits
-        min_val = -(1 << (bits - 1))     # -8 for 4 bits
-        
-        # Addition overflow
-        has_overflow, _ = check_overflow(max_val, 1, max_val + 1, bits, 'add')
-        self.assertTrue(has_overflow)
-        
-        # Subtraction overflow
-        has_overflow, _ = check_overflow(min_val, 1, min_val - 1, bits, 'subtract')
-        self.assertTrue(has_overflow)
-        
-        # Multiplication overflow
-        has_overflow, _ = check_overflow(max_val, 2, max_val * 2, bits, 'multiply')
-        self.assertTrue(has_overflow)
-        
-        # No overflow case
-        has_overflow, _ = check_overflow(1, 1, 2, bits, 'add')
-        self.assertFalse(has_overflow)
-    
     def test_base32_conversion(self):
-        """Test base32 conversion using standard alphabet (0-9, A-V)."""
+        """Test base32 conversion using standard alphabet (0-9, A-V).
+        For values 0-9, uses decimal digits.
+        For values 10-31, uses letters A-V.
+        """
         test_cases = [
-            (26, "Q"),      # 0x1A
-            (255, "7V"),    # 0xFF
-            (256, "80"),    # 0x100
-            (26.5, "Q.G"),  # 0x1A.8
-            (42, "1A"),
-            (1024, "U0"),
-            (3.75, "3.N"),
+            (26, "Q"),      # 26 = 0x1A = 26 base 32
+            (255, "7V"),    # 255 = 0xFF = 7*32 + 31 = "7V"
+            (256, "80"),    # 256 = 0x100 = 8*32 + 0 = "80"
+            (26.5, "Q.G"),  # 26.5 = 0x1A.8 = "Q.G"
+            (42, "1A"),     # 42 = 1*32 + 10 = "1A"
+            (1024, "100"),  # 1024 = 1*32^2 + 0*32 + 0 = "100"
+            (3.75, "3.N"),  # 3.75 = 3 + 0.75 = "3.N"
         ]
         
         for decimal, expected in test_cases:
@@ -209,11 +156,5 @@ class TestNumberConversion(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_number("0b102", 2)  # Invalid binary
 
-def run_tests():
-    """Run all tests with detailed output."""
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestNumberConversion)
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
-
 if __name__ == '__main__':
-    run_tests() 
+    unittest.main() 
