@@ -1,0 +1,124 @@
+Enter binary number: 10010101101010101.1010101
+
+=== Binary to Decimal Conversion Steps ===
+Converting 10010101101010101.1010101 to decimal
+
+1. Number is negative (leftmost bit is 1)
+2. Using two's complement for integer part:
+   a. Original binary:     10010101101010101
+   b. Invert all bits:     01101010010101010
+   c. Add 1 and convert:   76629
+
+3. Convert fractional part:
+   Calculate negative powers of 2:
+   2^-1 = 0.5
+   2^-3 = 0.125
+   2^-5 = 0.03125
+   2^-7 = 0.0078125
+
+Fractional sum = 0.6640625
+
+Final decimal value: 76629.6640625
+
+=== IEEE-754 Single Precision Visualization ===
+Converting 76629.6640625 to IEEE-754 format
+
+Binary layout (32 bits):
+| Sign | Exponent | Mantissa |
+|-------|-----------|-----------|
+|   0   | 10001111 | 00101011010101011010101 |
+
+Component breakdown:
+1. Sign bit: 0 (positive)
+2. Exponent: 10001111 (binary) = 143 (decimal)
+   - Bias: 127
+   - Actual exponent: 143 - 127 = 16
+3. Mantissa: 1.00101011010101011010101 = 1.1692758798599243
+
+Final value calculation:
+(-1)^0 × 1.1692758798599243 × 2^16
+= 76629.6640625
+
+=== Multi-Base Representation ===
+
+Number Layout:
+┌─────────┬────────────────────────────────────────┐
+│ Base    │ Representation                         │
+├─────────┼────────────────────────────────────────┤
+│ Base 10 │ 76629.6640625                            │
+│ Base 16 │ 0x12B55.AA0                              │
+│ Base 32 │ CK2V.VI                                  │
+│ Base 8  │ 0o225525.5240                            │
+│ Base 2  │ 1001 0101 1010 1010 1.1010 1010 0000 │
+└─────────┴────────────────────────────────────────┘
+
+Bit Patterns:
+Binary integer part:  1001 0101 1010 1010 1
+Binary fraction part: 1010 1010 0000
+
+Bit Mapping:
+Binary groups (4 bits):
+0000 0001 0010 1011 0101 0101
+Hex digits:             0    1    2    B    5    5
+
+Binary groups (3 bits):
+000 000 010 010 101 101 010 101
+Octal digits:          0  0  2  2  5  5  2  5
+
+Fractional part mapping:
+Binary groups: 1010 1010 0000
+Hex digits:    A    A    0
+
+Conversion Steps:
+1. Decimal to Hexadecimal:
+   76629.6640625 (base 10) = 0x12B55.AA0 (base 16)
+2. Decimal to Octal:
+   76629.6640625 (base 10) = 0o225525.5240 (base 8)
+3. Decimal to Binary:
+   76629.6640625 (base 10) = 0b10010101101010101.101010100000 (base 2)
+4. Fractional part conversion:
+   0.101010100000 (binary) = 0.6640625 (decimal)
+
+   === Multi-Base Representation ===
+
+Number Layout:
+┌─────────┬────────────────────────────────────────┐
+│ Base    │ Representation                         │
+├─────────┼────────────────────────────────────────┤
+│ Base 10 │ 625.625                                  │
+│ Base 16 │ 0x271.A00                                │
+│ Base 32 │ TR.U                                     │
+│ Base 8  │ 0o1161.5000                              │
+│ Base 2  │ 1001 1100 01.1010 0000 0000 │
+└─────────┴────────────────────────────────────────┘
+
+Bit Patterns:
+Binary integer part:  1001 1100 01
+Binary fraction part: 1010 0000 0000
+
+Bit Mapping:
+Binary groups (4 bits):
+0010 0111 0001
+Hex digits:             2    7    1
+
+Binary groups (3 bits):
+001 001 110 001
+Octal digits:          1  1  6  1
+
+Fractional part mapping:
+Binary groups: 1010 0000 0000
+Hex digits:    A    0    0
+
+Conversion Steps:
+
+Decimal to Hexadecimal:
+625.625 (base 10) = 0x271.A00 (base 16)
+
+Decimal to Octal:
+625.625 (base 10) = 0o1161.5000 (base 8)
+
+Decimal to Binary:
+625.625 (base 10) = 0b1001110001.101000000000 (base 2)
+
+Fractional part conversion:
+0.101000000000 (binary) = 0.625 (decimal)

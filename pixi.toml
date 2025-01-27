@@ -1,0 +1,12 @@
+[project]
+authors = ["Ryan Oates <ryanfullstack@icloud.com>"]
+channels = ["https://conda.modular.com/max", "https://conda.modular.com/max-nightly", "https://repo.prefix.dev/modular-community", "conda-forge"]
+description = "Add a short description here"
+name = "conversions"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+max = ">=24.6.0,<25"
